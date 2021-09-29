@@ -1,2 +1,2 @@
-# EM-DC-NEURIPS_2021
+# Expectation Maximization Data Centric
 Improved EM algorithm with totally ordered structure
