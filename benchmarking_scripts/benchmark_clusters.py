@@ -11,7 +11,6 @@ import os
 parent_dir = os.getcwd()
 input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
 output_loc = os.path.join(parent_dir, "benchmark_clus")
-# bkup_dir = os.path.join(parent_dir, "benchmark_clus_bkup")
 
 if os.path.exists(output_loc) is False:
     os.mkdir(output_loc)
@@ -44,7 +43,7 @@ def do_pca(dataset, n_comp):
 
 ### Clustering Experiments
 
-data, labels = read_clus_data(os.path.join(input_loc, "crop.csv"))
+data, labels = read_data(os.path.join(input_loc, "crop.csv"))
 data = do_pca(data, 10)
 
 print("#####################")
@@ -154,4 +153,4 @@ for nclus in num_clust:
         result_dict[nclus] += [temp]
 
 
-write_data(result_dict, output_loc, "emt_clustering_res", "Clusters")
+write_data(result_dict, output_loc, "emt_res", "Clusters")
