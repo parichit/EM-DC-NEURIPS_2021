@@ -4,7 +4,7 @@ To deal with the unimaginable continual growth of data and the focus on its use 
 
 ### Dependency
 
-The package us built and tested in Pythin-3.8.7 (any version of python 3.8.7 or up should work). The code use python library sorted containers (http://www.grantjenks.com/docs/sortedcontainers/) developed by Grant Jenks, for implementing low level BST functionalities.
+The package is built and tested in Python-3.8.7. The code use python library sorted containers (http://www.grantjenks.com/docs/sortedcontainers/ , credits to Grant Jenks), for implementing low level BST functionalities.
 
 ### Supplementary Information
 
