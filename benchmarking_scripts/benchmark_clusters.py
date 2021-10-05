@@ -1,7 +1,7 @@
 from EMDC.eval_model import model_eval as emdc_model_eval
 from EMSTAR.eval_model import model_eval as ems_model_eval
 from EMT.eval_model import model_eval as emt_model_eval
-from read_write_data import *
+from benchmarking_scripts.read_write_data import *
 from datetime import datetime
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -9,7 +9,7 @@ import numpy as np
 import os
 
 parent_dir = os.path.dirname(os.getcwd())
-input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
+input_loc = os.path.join(parent_dir, "../datasets", "clustering_data")
 output_loc = os.path.join(parent_dir, "benchmark_clus")
 
 if os.path.exists(output_loc) is False:
@@ -27,9 +27,9 @@ epsilon = 0.01
 num_iters = 500
 
 prop = 3
-num_clust = [5, 10, 20, 30, 35]
+num_clust = [2, 5, 7]
 seed_cnt_clus = [9598, 1901, 3231, 453, 63987]
-num_rep = 3
+num_rep = 1
 
 def do_pca(dataset, n_comp):
     pca = PCA(n_components=n_comp)
@@ -43,8 +43,8 @@ def do_pca(dataset, n_comp):
 
 ### Clustering Experiments
 
-data, labels = read_data(os.path.join(input_loc, "crop.csv"))
-data = do_pca(data, 10)
+data, labels = read_data(os.path.join(input_loc, "crop.csv"), False)
+# data = do_pca(data, 10)
 
 print("#####################")
 print("EMDC: Clustering Experiments")
@@ -73,7 +73,6 @@ for nclus in num_clust:
     temp = np.array(temp)
     avg_score = np.round(temp.mean(0),2).tolist()
     temp = [nclus] + avg_score
-
 
     if nclus not in result_dict.keys():
         result_dict[nclus] = [temp]

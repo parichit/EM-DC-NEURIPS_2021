@@ -1,15 +1,14 @@
 from EMDC.eval_model import model_eval as emdc_model_eval
 from EMSTAR.eval_model import model_eval as ems_model_eval
 from EMT.eval_model import model_eval as emt_model_eval
-from read_write_data import *
+from benchmarking_scripts.read_write_data import *
 from datetime import datetime
-from collections import Counter
 
 import numpy as np
 import os
 
 parent_dir = os.path.dirname(os.getcwd())
-input_loc = os.path.join(parent_dir, "datasets", "dimensionality_data")
+input_loc = os.path.join(parent_dir, "../datasets", "dimensionality_data")
 output_loc = os.path.join(parent_dir, "benchmark_dims")
 
 if os.path.exists(output_loc) is False:

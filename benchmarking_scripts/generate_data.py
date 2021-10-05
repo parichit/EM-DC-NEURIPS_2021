@@ -1,8 +1,6 @@
-import numpy as np
-import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from read_write_data import *
+from benchmarking_scripts.read_write_data import *
 
 
 parent_dir = os.path.dirname(os.getcwd())
@@ -20,12 +18,12 @@ def do_pca(dataset, n_comp, labels):
     dataset = ss.fit_transform(dataset)
     principalComponents = pca.fit_transform(dataset)
 
-    if labels is not "":
+    if len(labels) != 0:
         temp = pd.DataFrame(principalComponents)
         temp["label"] = labels
         return temp
 
-    pc_esc = np.array(pd.DataFrame(data=principalComponents))
+    pc_esc = pd.DataFrame(data=principalComponents)
     return pc_esc
 
 
@@ -55,7 +53,7 @@ def create_clustering_data(raw_data, orig_labels):
     out_labels += orig_labels[np.where(orig_labels == 5)[0].tolist()].tolist()
     out_labels += orig_labels[np.where(orig_labels == 6)[0].tolist()].tolist()
 
-    out_data = do_pca(out_data, 10, "")
+    out_data = do_pca(out_data, 10, [])
 
     # print(out_data.shape, len(out_labels))
     out_data["label"] = out_labels
@@ -81,7 +79,7 @@ def create_scal_data(raw_data, orig_labels):
     Note: beyond 20 dimensions the PCs don't capture much variance.
     """
 
-    raw_data = do_pca(raw_data, 30, "")
+    raw_data = np.array(do_pca(raw_data, 30, []))
 
     # 100k
     red_data = pd.DataFrame(raw_data[np.where(orig_labels == 1)[0].tolist()[1:20000], :])

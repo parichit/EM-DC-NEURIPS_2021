@@ -67,7 +67,6 @@ def read_data(input_loc, raw):
     data = pd.read_csv(input_loc, header=0, sep=seperator)
     data = data.replace('?', np.NaN)
     data = data.dropna()
-    # print(data.columns)
 
     # Get the label column from the data
     labels = list(data['label'].values)
