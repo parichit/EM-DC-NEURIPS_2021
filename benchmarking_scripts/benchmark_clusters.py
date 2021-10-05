@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 import os
 
-parent_dir = os.getcwd()
+parent_dir = os.path.dirname(os.getcwd())
 input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
 output_loc = os.path.join(parent_dir, "benchmark_clus")
 

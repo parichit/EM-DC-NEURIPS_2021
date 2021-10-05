@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from read_write_data import *
 
 
-parent_dir = os.getcwd()
+parent_dir = os.path.dirname(os.getcwd())
 input_loc = os.path.join(parent_dir, "datasets", "raw_data")
 clus_out_loc = os.path.join(parent_dir, "datasets", "clustering_data")
 dims_out_loc = os.path.join(parent_dir, "datasets", "dimensionality_data")
