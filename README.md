@@ -12,7 +12,7 @@ Access the additional information about experiments, dataset details and how to 
 
 ### Algorithm Details
 
-A PDF document illustrating the pseudo code for the algorithm can be seen in Algorithm.pdf.
+A PDF document illustrating the pseudo code for the algorithm can be seen in EMDC_algorithm.pdf.
 
 ### Contact Details
 
