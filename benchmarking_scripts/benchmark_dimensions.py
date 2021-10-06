@@ -43,18 +43,6 @@ print("#####################")
 
 result_dict = {}
 
-# def do_pca(dataset, n_comp, labels):
-#     pca = PCA(n_components=n_comp)
-#     ss = StandardScaler()
-#     dataset = ss.fit_transform(dataset)
-#     principalComponents = pca.fit_transform(dataset)
-#     temp = pd.DataFrame(principalComponents)
-#     temp["labels"] = labels
-#     temp.to_csv(os.path.join(input_loc, "crop_"+str(n_comp)+".csv"), index=False, sep="\t")
-#     # print("Variance: ", pca.explained_variance_)
-#     pc_esc = np.array(pd.DataFrame(data=principalComponents))
-#     return pc_esc
-
     
 for dims in num_dims:
     print("Number of dimensions: ", dims)
@@ -62,10 +50,7 @@ for dims in num_dims:
     j = 0
 
     # Load data
-    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"))
-    # data, labels = read_dims_data(os.path.join(input_loc, "crop.csv"))
-    # data = do_pca(data, dims, labels)
-    # continue
+    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"), False)
 
     for rep in range(num_rep):
 
@@ -103,7 +88,7 @@ for dims in num_dims:
     j = 0
 
     # Load data
-    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"))
+    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"), False)
 
     for rep in range(num_rep):
 
@@ -144,7 +129,7 @@ for dims in num_dims:
     j = 0
 
     # Load data
-    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"))
+    data, labels = read_data(os.path.join(input_loc, "crop_"+str(dims)+".csv"), False)
 
     for rep in range(num_rep):
 
