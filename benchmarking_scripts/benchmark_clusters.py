@@ -1,3 +1,8 @@
+import os, sys
+
+file_dir = os.path.dirname(os.getcwd())
+sys.path.append(file_dir)
+
 from EMDC.eval_model import model_eval as emdc_model_eval
 from EMSTAR.eval_model import model_eval as ems_model_eval
 from EMT.eval_model import model_eval as emt_model_eval
@@ -6,10 +11,11 @@ from datetime import datetime
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-import os
+
 
 parent_dir = os.path.dirname(os.getcwd())
-input_loc = os.path.join(parent_dir, "../datasets", "clustering_data")
+
+input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
 output_loc = os.path.join(parent_dir, "benchmark_clus")
 
 if os.path.exists(output_loc) is False:
