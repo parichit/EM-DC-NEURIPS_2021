@@ -33,7 +33,8 @@ epsilon = 0.01
 num_iters = 500
 
 prop = 3
-num_clust = [2, 5, 7]
+# num_clust = [2, 5, 7]
+num_clust = [5, 10, 20, 30, 35]
 seed_cnt_clus = [9598, 1901, 3231, 453, 63987]
 num_rep = 1
 

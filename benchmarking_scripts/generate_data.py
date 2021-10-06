@@ -1,3 +1,8 @@
+import os, sys
+
+file_dir = os.path.dirname(os.getcwd())
+sys.path.append(file_dir)
+
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from benchmarking_scripts.read_write_data import *

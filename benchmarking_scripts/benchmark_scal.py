@@ -1,11 +1,15 @@
+import os, sys
+
+file_dir = os.path.dirname(os.getcwd())
+sys.path.append(file_dir)
+
 from EMDC.eval_model import model_eval as emdc_model_eval
 from EMSTAR.eval_model import model_eval as ems_model_eval
 from EMT.eval_model import model_eval as emt_model_eval
 from benchmarking_scripts.read_write_data import *
 from datetime import datetime
-
 import numpy as np
-import os
+
 
 parent_dir = os.path.dirname(os.getcwd())
 input_loc = os.path.join(parent_dir, "datasets", "scalability_data")
