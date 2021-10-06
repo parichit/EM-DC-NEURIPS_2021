@@ -38,7 +38,7 @@ nclus = 10
 
 ## Dimensioanlity Experiments
 print("#####################")
-print("EMDC: Clustering Experiments")
+print("EMDC: Dimensionality Experiments")
 print("#####################")
 
 result_dict = {}
@@ -77,7 +77,7 @@ write_data(result_dict, output_loc, "emdc_res", "Dimensions")
 
 
 print("#####################")
-print("EMSTAR: Clustering Experiments")
+print("EMSTAR: Dimensionality Experiments")
 print("#####################")
 
 result_dict = {}
@@ -113,9 +113,8 @@ for dims in num_dims:
 write_data(result_dict, output_loc, "emstar_res", "Dimensions")
 
 
-
 print("#####################")
-print("EMT: Clustering Experiments")
+print("EMT: Dimensionality Experiments")
 print("#####################")
 
 num_iters = 1000

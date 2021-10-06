@@ -20,6 +20,7 @@ def model_eval(X, y, nclust, maxiter, epsilon, mu_indices):
     ari = adjusted_rand_score(y, pred)
     accuracy = int(round(accuracy*100))
     TraningTime = round(TraningTime, 3)
+    print("ARI: ", ari)
     
     # print(" Traning running time :%s seconds " % TraningTime)
     # print( "accuracy:%s%%" % accuracy)

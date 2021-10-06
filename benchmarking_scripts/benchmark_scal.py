@@ -77,7 +77,7 @@ for n in num_data:
 write_data(result_dict, output_loc, "emdc_res", "Num_points")
 
 print("#####################")
-print("EMSTAR: Clustering Experiments")
+print("EMSTAR: Scalability Experiments")
 print("#####################")
 
 
@@ -115,7 +115,7 @@ for n in num_data:
 write_data(result_dict, output_loc, "emstar_res", "Num_points")
 
 print("#####################")
-print("EMT: Clustering Experiments")
+print("EMT: Scalability Experiments")
 print("#####################")
 
 num_iters = 1000
