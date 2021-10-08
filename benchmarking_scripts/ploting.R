@@ -1,8 +1,13 @@
+# Parichit Sharma, Department of Computer Science, IUB
+# A visualization script to create the comparative bar plots for
+# the output data.
+
 library(ggplot2)
 library(gridExtra)
 library(grid)
 
-input_loc = file.path(trimws(getwd()))
+
+input_loc = file.path(dirname(trimws(getwd())))
 
 # Set plot dimesions (inches)
 fig_width = 12
@@ -38,13 +43,6 @@ get_plot_matrix <- function(emdc_data, star_data, emt_data, key){
   emdc_data[, 5] = as.numeric(emdc_data[,5])
 
   return(emdc_data)
-}
-
-get_legend<-function(myggplot){
-  tmp <- ggplot_gtable(ggplot_build(myggplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)
 }
 
 
