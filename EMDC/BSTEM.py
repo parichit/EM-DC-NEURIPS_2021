@@ -27,8 +27,15 @@ def m_step(data, W, mu, sigma,nclust):
         temp4 = (data-mu[t]).T
         sigma[t] = np.dot(temp4, temp3)/W.sum(axis=1)[t]
 
-        if np.isfinite(np.linalg.cond(sigma)) is False:
-            sigma = np.fill_diagonal(sigma, 0.000000000001)
+        # if np.isfinite(np.linalg.cond(sigma)) is False:
+        #     sigma = np.fill_diagonal(sigma, 0.000000000001)
+        
+        try:
+            if np.isfinite(np.linalg.cond(sigma[t])) is False:
+                sigma[t] = np.diag(np.full(data.shape[1], 0.0000000001))
+        
+        except np.linalg.LinAlgError as e:
+                sigma[t] = np.diag(np.full(data.shape[1], 0.0000000001))
 
         mu[t] = (data * W.T[:, t][:, np.newaxis]).sum(axis=0)/W.sum(axis=1)[t]
     prior = W.sum(axis=1)/n
@@ -42,6 +49,7 @@ def em_clustering(data, nclust, maxiter, epsilon, thres, mu_indices):
     sigma = np.zeros((nclust, d, d), dtype=float) #sigma.shape(k, d, d)
 
     if len(mu_indices) != 0:
+        # print("Hello\n",data[mu_indices])
         for t in range(len(mu_indices)):  # assigning the first nclust points to the mu
             mu[t] = data[mu_indices[t]]
             sigma[t] = np.identity(d)

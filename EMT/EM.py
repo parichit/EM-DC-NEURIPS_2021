@@ -1,6 +1,7 @@
 # @Hasan Kurban, 2016, IUB, Computer Scince Department
 import numpy as np
 from scipy.stats import multivariate_normal
+from scipy.linalg import det
 
 # E-step: Given P(x_i|C_j), calculate P(C_j|x_i)
 def e_step(data, mu, sigma,prior,nclust):
@@ -17,15 +18,22 @@ def e_step(data, mu, sigma,prior,nclust):
 
 # M-step: Updata mu , sigma, prior for each cluster
 def m_step(data, W, mu, sigma,nclust):
-    n= data.shape[0]
+    n = data.shape[0]
+    
     for t in range(nclust):
-        temp3 = (data -mu[t])*  W.T[:,t][:,np.newaxis]
-        temp4 = (data-mu[t]).T
-        sigma[t] = np.dot(temp4,temp3)  / W.sum(axis=1)[t]
+        
+        temp3 = (data - mu[t]) *  W.T[:,t][:, np.newaxis]
+        temp4 = (data - mu[t]).T
+        sigma[t] = np.dot(temp4,temp3) / W.sum(axis=1)[t]
 
-        if np.isfinite(np.linalg.cond(sigma)) is False:
-            sigma = np.fill_diagonal(sigma, 0.000001)
-
+        try:
+            if np.isfinite(np.linalg.cond(sigma[t])) is False:
+                # sigma[t] = np.fill_diagonal(sigma[t], 0.0000000001)
+                sigma[t] = np.diag(np.full(data.shape[1], 0.0000000001))
+        
+        except np.linalg.LinAlgError as e:
+                sigma[t] = np.diag(np.full(data.shape[1], 0.0000000001))
+        
         mu[t] = (data *  W.T[:,t][:,np.newaxis]).sum(axis=0)/ W.sum(axis=1)[t]
     prior =W.sum(axis=1)/n 
     return mu, sigma, prior

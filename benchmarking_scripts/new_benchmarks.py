@@ -17,7 +17,7 @@ parent_dir = os.path.dirname(os.getcwd())
 input_loc = "/u/parishar/nobackup/DATASETS/geokmeans_data/real_data/"
 
 # input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
-output_loc = os.path.join(parent_dir, "benchmark_clus")
+output_loc = os.path.join(parent_dir, "benchmark_clus/")
 print(output_loc)
 
 if os.path.exists(output_loc) is False:
@@ -43,135 +43,120 @@ def do_pca(dataset, n_comp):
 
 
 # Setting up parameters
-epsilon = 0.01
+epsilon = 0.001
 num_iters = 200
 
 prop = 3
-num_clust = [25]
-seed_cnt_clus = [9598, 1901, 3231, 453, 63987]
-num_rep = 3
+num_clust = [2, 5, 10]
+seed_cnt_clus = [9598, 1901, 3231, 453, 63987, 7821, 8903, 1234, 4321, 5678]
+num_rep = 5
 
 data_list = ['ringnorm', 'wisconsin', 'census', 'spambase', 'magic', 'crop']
-
+# data_list = ['ringnorm', "wisconsin"]
 
 
 ### Clustering Experiments
-
-print("#####################")
-print("EMDC: Clustering Experiments")
-print("#####################")
+all_results = pd.DataFrame(columns=["Dataset", "Model", "Clusters", "ARI", "ACC", "Time", "Iters"])
+avg_results = pd.DataFrame(columns=["Dataset", "Model", "Clusters", "ARI", "ACC", "Time", "Iters"])
 
 
-result_dict = {}
 
 for data_name in data_list:
 
     data, labels = read_data(data_name)
 
-    all_results = pd.DataFrame()
+    print("#####################")
+    print("EMDC: Clustering Experiments")
+    print("#####################")
 
+    if data_name in ["census", "spambase", "magic"]:
+        num_clust = [2, 10, 20, 30, 35]
+    
+    elif data_name in ["wisconsin", "ringnorm"]:
+        num_clust = [2, 5, 10, 15, 20]
+    
+    elif data_name == "crop":
+        num_clust = [5, 20, 30, 40, 50]
     
     for nclus in num_clust:
         
         print("Number of clusters: ", nclus)
-        temp = []
+        temp = pd.DataFrame()
         j = 0
 
         for rep in range(num_rep):
 
             np.random.seed(seed_cnt_clus[j])
             mu_indices = np.random.randint(0, data.shape[0], nclus)
+            # mu_indices = [i for i in range(nclus)]
 
             ari, acc, trtime, iterations = emdc_model_eval(data, labels, nclus, num_iters, epsilon, prop, mu_indices)
-
-            temp += [["EMDC", data_name, nclus, ari, acc, trtime, iterations]]
+            
+            temp_series = pd.Series([data_name, "EM-D", nclus, ari, acc, trtime, iterations], index=all_results.columns)
+            temp = pd.concat([temp, pd.DataFrame([temp_series])], ignore_index=True)
 
             j += 1
-            
-        temp = pd.DataFrame(temp)
-        avg_score = np.round(temp.iloc[:, 3:].mean(), 2).tolist()
-        # avg_score = np.round(temp.mean(0),2).tolist()
 
-        avg_temp = [nclus] + avg_score
-
-        if nclus not in result_dict.keys():
-            result_dict[nclus] = [avg_temp]
-        else:
-            result_dict[nclus] += [avg_temp]
-
-    write_data(result_dict, output_loc, "emdc_res", "Clusters")
-
+        all_results = pd.concat([all_results, temp], ignore_index=True)   
+        avg_score = pd.Series([data_name, "EM-D"] + temp.iloc[:, 2:].mean().to_list(), index=avg_results.columns)
+        avg_results = pd.concat([avg_results, pd.DataFrame([avg_score])], ignore_index=True)
 
     
-    
-    print("#####################")
+    print("\n#####################")
     print("EMSTAR: Clustering Experiments")
-    print("#####################")
+    print("#####################\n")
 
-
-    result_dict = {}
 
     for nclus in num_clust:
         print("Number of clusters: ", nclus)
-        temp = []
+        temp = pd.DataFrame()
         j = 0
 
         for rep in range(num_rep):
             
             np.random.seed(seed_cnt_clus[j])
             mu_indices = np.random.randint(0, data.shape[0], nclus)
-
-            ari, acc, trtime, iterations = ems_model_eval(data, labels, nclus, num_iters, epsilon, mu_indices)
+            # mu_indices = [i for i in range(nclus)]
             
-            temp += [[ari, acc, trtime, iterations]]
+            ari, acc, trtime, iterations = ems_model_eval(data, labels, nclus, num_iters, epsilon, mu_indices)
+
+            temp_series = pd.Series([data_name, "EM*", nclus, ari, acc, trtime, iterations], index=all_results.columns)
+            temp = pd.concat([temp, pd.DataFrame([temp_series])], ignore_index=True)
 
             j += 1
 
-        temp = np.array(temp)
-        avg_score = np.round(temp.mean(0),2).tolist()
-        temp = [nclus] + avg_score   
+        all_results = pd.concat([all_results, temp], ignore_index=True)   
+        avg_score = pd.Series([data_name, "EM*"] + temp.iloc[:, 2:].mean().to_list(), index=avg_results.columns)
+        avg_results = pd.concat([avg_results, pd.DataFrame([avg_score])], ignore_index=True)
 
-        if nclus not in result_dict.keys():
-            result_dict[nclus] = [temp]
-        else:
-            result_dict[nclus] += [temp]
-        
-
-    write_data(result_dict, output_loc, "emstar_res", "Clusters")
-
-    print("#####################")
+    
+    print("\n#####################")
     print("EMT: Clustering Experiments")
     print("#####################")
 
-    num_iters = 1000
-    epsilon = 0.01
-
-    result_dict = {}
-
     for nclus in num_clust:
         print("Number of clusters: ", nclus)
-        temp = []
+        temp = pd.DataFrame()
         j = 0
 
         for rep in range(num_rep):
             
             np.random.seed(seed_cnt_clus[j])
             mu_indices = np.random.randint(0, data.shape[0], nclus)
+            # mu_indices = [i for i in range(nclus)]
 
             ari, acc, trtime, iterations = emt_model_eval(data, labels, nclus, num_iters, epsilon, mu_indices)
             
-            temp += [[ari, acc, trtime, iterations]]
-
+            temp_series = pd.Series([data_name, "EM-T", nclus, ari, acc, trtime, iterations], index=all_results.columns)
+            temp = pd.concat([temp, pd.DataFrame([temp_series])], ignore_index=True)
+            
             j += 1
 
-        temp = np.array(temp)
-        avg_score = np.round(temp.mean(0),2).tolist()
-        temp = [nclus] + avg_score   
-
-        if nclus not in result_dict.keys():
-            result_dict[nclus] = [temp]
-        else:
-            result_dict[nclus] += [temp]
+        all_results = pd.concat([all_results, temp], ignore_index=True)
+        avg_score = pd.Series([data_name, "EM-T"] + temp.iloc[:, 2:].mean().to_list(), index=avg_results.columns)
+        avg_results = pd.concat([avg_results, pd.DataFrame([avg_score])], ignore_index=True)
 
 
-    write_data(result_dict, output_loc, "emt_res", "Clusters")
+# print(avg_results)
+all_results.to_csv(output_loc + "all_results.csv", index=False)
+avg_results.to_csv(output_loc + "avg_results.csv",  index=False)

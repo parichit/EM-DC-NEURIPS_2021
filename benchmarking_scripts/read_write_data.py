@@ -93,12 +93,32 @@ def read_data(data_name):
 
     file_loc = '/u/parishar/nobackup/DATASETS/geokmeans_data/real_data/'
 
-    if data_name in ['wisconsin', 'census', 'spambase', 'magic']:
+    if data_name in ['wisconsin', 'spambase', 'magic']:
         
         base_data = fetch_ucirepo(id=data_id[data_name])
         data = base_data.data.features
         labels = base_data.data.targets
-    
+
+        if data_name == 'wisconsin':
+            labels.loc[labels['Diagnosis'] == 'M', 'Diagnosis'] = 0
+            labels.loc[labels['Diagnosis'] == 'B', 'Diagnosis'] = 1
+        
+        # elif data_name == 'census':
+        #     labels.loc[labels['income'] == '<=50K', 'income'] = 0
+        #     labels.loc[labels['income'] == '<=50K.', 'income'] = 0
+        #     labels.loc[labels['income'] == '>50K', 'income'] = 1
+        #     labels.loc[labels['income'] == '>50K.', 'income'] = 1
+        
+        elif data_name == 'magic':
+            labels.loc[labels['class'] == 'g', 'class'] = 0
+            labels.loc[labels['class'] == 'h', 'class'] = 1
+
+    elif data_name == "census":
+        data = pd.read_csv(file_loc + 'census.txt')
+        labels = data['incomelevel']
+        data.drop(columns=['incomelevel'], inplace=True) 
+        # print(data.head())
+
     elif data_name == "crop":
         data = pd.read_csv(file_loc + 'Crop_after_pca.csv', header=None)
         labels = pd.read_csv(file_loc + 'labels_Crop.csv', header=None)
@@ -111,11 +131,11 @@ def read_data(data_name):
     # data = pd.read_csv(file_loc, header=None)
     # data = np.asarray(data, dtype=float)
     
-    print("Loading Data: ", data_name)
+    print("\nLoading Data: ", data_name)
     print("Data shape: ", data.shape, "Labels shape: ", labels.shape)
     print("\n")
     
-    return np.array(data), np.array(labels)
+    return np.array(data), np.array(labels).reshape(-1)
 
 
 def read_labels(label_loc):
