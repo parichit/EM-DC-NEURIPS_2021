@@ -9,12 +9,14 @@ def test(y_testing, W, data): #pred is our prediction. pred1 is from the data
     nclust1 = len(uniqueItems1) #number or unique clusters
     means1 = np.zeros((nclust1,d),dtype=float) # to store mean of the true clusters
     list_testing1 = y_testing.tolist()
+    
     # list_testing1 = y_testing  #coercing y_testing to a list
     # means for true clusters
     for i in range(len(uniqueItems1)):
         item = uniqueItems1[i]
         indices = [j for j, x in enumerate(list_testing1) if x == item]
         means1[i] = data[indices].mean(axis=0)
+    
     #THIS PART  IS FOR PREDICTION, HANDLING PREDICTIONS
     pred= W.argmax(axis=0)
     uniqueItems2 = np.unique(pred)

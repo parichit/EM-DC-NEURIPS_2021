@@ -10,8 +10,8 @@ def e_step(data, mu, sigma,prior,nclust):
         W[k] = (multivariate_normal.pdf(data, mean=mu[k], cov=sigma[k],allow_singular=True)) * prior[k]
     temp2= W.sum(axis=0)
     W = W / temp2
-    W[np.where(np.isnan(W))] = np.finfo(np.float).eps
-    W[np.where(W < 0)] = np.finfo(np.float).eps
+    W[np.where(np.isnan(W))] = np.finfo(np.float32).eps
+    W[np.where(W < 0)] = np.finfo(np.float32).eps
 
     return W
 

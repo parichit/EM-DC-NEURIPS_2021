@@ -19,8 +19,8 @@ def e_step(data, mu, sigma,prior,nclust):
     W = W / temp2
 
     # Adjust for numeric underflow
-    W[np.where(np.isnan(W))] = np.finfo(np.float).eps
-    W[np.where(W<0)] = np.finfo(np.float).eps
+    W[np.where(np.isnan(W))] = np.finfo(np.float32).eps
+    W[np.where(W<0)] = np.finfo(np.float32).eps
 
     return W
 

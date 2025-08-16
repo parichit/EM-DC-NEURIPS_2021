@@ -1,0 +1,4 @@
+Clusters	ARI	Accuracy	Time	Iterations
+15	0.18	78.0	12.21	46.0
+20	0.19	78.33	18.56	56.0
+25	0.18	78.0	30.18	75.33

@@ -3,7 +3,7 @@
 from EMDC.BSTEM import *
 from EMDC.testing import *
 import time
-from sklearn.metrics.cluster import adjusted_rand_score, adjusted_mutual_info_score
+from sklearn.metrics.cluster import adjusted_rand_score
 
 
 def model_eval(X, y, nclust, maxiter, epsilon, thres, mu_indices):
@@ -14,10 +14,16 @@ def model_eval(X, y, nclust, maxiter, epsilon, thres, mu_indices):
 
     # testing
     W = e_step(X, mu, sigma, prior, nclust)
+    
     accuracy, pred = test(y, W, X)
+    # pred= W.argmax(axis=0)
+    
     ari = adjusted_rand_score(y, pred)
     print("ARI: ", ari)
+    
     accuracy = int(round(accuracy*100))
+    # accuracy = 0
+    
     TraningTime = round(TraningTime, 3)
     
     # print(" Traning running time :%s seconds " % TraningTime)

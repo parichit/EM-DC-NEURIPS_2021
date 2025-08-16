@@ -14,9 +14,11 @@ import numpy as np
 
 
 parent_dir = os.path.dirname(os.getcwd())
+input_loc = "/u/parishar/nobackup/DATASETS/geokmeans_data/real_data/"
 
-input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
+# input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
 output_loc = os.path.join(parent_dir, "benchmark_clus")
+print(output_loc)
 
 if os.path.exists(output_loc) is False:
     os.mkdir(output_loc)
@@ -30,10 +32,10 @@ else:
 
 # Setting up parameters
 epsilon = 0.01
-num_iters = 500
+num_iters = 200
 
 prop = 3
-num_clust = [5, 10, 20, 30, 35]
+num_clust = [25]
 seed_cnt_clus = [9598, 1901, 3231, 453, 63987]
 num_rep = 3
 
@@ -49,7 +51,9 @@ def do_pca(dataset, n_comp):
 
 ### Clustering Experiments
 
-data, labels = read_data(os.path.join(input_loc, "crop.csv"), False)
+data = read_data(os.path.join(input_loc, "census.csv"))
+labels = read_labels(os.path.join(input_loc, "labels_Census.csv"))
+
 # data = do_pca(data, 10)
 
 print("#####################")
@@ -59,6 +63,8 @@ print("#####################")
 result_dict = {}
 
     
+
+
 for nclus in num_clust:
     
     print("Number of clusters: ", nclus)

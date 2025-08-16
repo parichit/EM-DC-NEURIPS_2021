@@ -14,8 +14,8 @@ def e_step(data, mu, sigma,prior,nclust):
     temp2 = W.sum(axis=0)
     W = W / temp2
 
-    W[np.where(np.isnan(W))] = np.finfo(np.float).eps
-    W[np.where(W<0)] = np.finfo(np.float).eps
+    W[np.where(np.isnan(W))] = np.finfo(np.float32).eps
+    W[np.where(W<0)] = np.finfo(np.float32).eps
 
     return W
 

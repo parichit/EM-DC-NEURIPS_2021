@@ -46,7 +46,8 @@ def seperate_he_le(data, nclust, bst_list, d, thres): # seperate low and high ex
 		# High expression data
 		bst_list[index] = SortedList(bst_list[index][int(len(bst_list[index])/thres):len(bst_list[index])])
 
-		# print("clus: ", index, "\n", leaves[index][0:5])
+		# print("Clus: ", index, "\n", "Cluster size: ", len(leaves[index]), "\n", 
+		# "leaves size: ", len(leaves),)
 
 	he_Index = sum(leaves, [])
 	he_IndexLen = len(he_Index)

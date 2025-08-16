@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from ucimlrepo import fetch_ucirepo
 import os
 
 
@@ -57,27 +58,69 @@ def read_wisconsin_data(input_loc):
     return data, labels
 
 
-def read_data(input_loc, raw):
+# def read_data(input_loc, raw):
 
-    if raw:
-        seperator = ","
-    else:
-        seperator = "\t"
+#     if raw:
+#         seperator = ","
+#     else:
+#         seperator = "\t"
 
-    data = pd.read_csv(input_loc, header=0, sep=seperator)
-    data = data.replace('?', np.NaN)
-    data = data.dropna()
+#     data = pd.read_csv(input_loc, header=0, sep=seperator)
+#     data = data.replace('?', np.NaN)
+#     data = data.dropna()
 
-    # Get the label column from the data
-    labels = list(data['label'].values)
-    data.drop(['label'], inplace=True, axis=1)
+#     # Get the label column from the data
+#     labels = list(data['label'].values)
+#     data.drop(['label'], inplace=True, axis=1)
 
-    # Subset the feature columns from the data
-    data = np.array(data, dtype=float)
+#     # Subset the feature columns from the data
+#     data = np.array(data, dtype=float)
 
-    # Cast labels to a numpy array
-    labels = np.array(labels)
-    print("Data shape: ", data.shape)
-    return data, labels
+#     # Cast labels to a numpy array
+#     labels = np.array(labels)
+#     print("Data shape: ", data.shape)
+#     return data, labels
+
+
+def read_data(data_name):
+
+    data_id = {
+        'wisconsin': 17,
+        'census': 20,
+        'magic': 159,
+        'spambase': 94
+        }
+
+    file_loc = '/u/parishar/nobackup/DATASETS/geokmeans_data/real_data/'
+
+    if data_name in ['wisconsin', 'census', 'spambase', 'magic']:
+        
+        base_data = fetch_ucirepo(id=data_id[data_name])
+        data = base_data.data.features
+        labels = base_data.data.targets
+    
+    elif data_name == "crop":
+        data = pd.read_csv(file_loc + 'Crop_after_pca.csv', header=None)
+        labels = pd.read_csv(file_loc + 'labels_Crop.csv', header=None)
+
+    elif data_name == "ringnorm":
+        data = pd.read_csv(file_loc + 'ringnorm.csv', header=None)
+        labels = pd.read_csv(file_loc + 'labels_ringnorm.csv', header=None)
+
+
+    # data = pd.read_csv(file_loc, header=None)
+    # data = np.asarray(data, dtype=float)
+    
+    print("Loading Data: ", data_name)
+    print("Data shape: ", data.shape, "Labels shape: ", labels.shape)
+    print("\n")
+    
+    return np.array(data), np.array(labels)
+
+
+def read_labels(label_loc):
+    labels = pd.read_csv(label_loc, header=None)
+    labels = np.asarray(labels).flatten()
+    return labels
 
 
