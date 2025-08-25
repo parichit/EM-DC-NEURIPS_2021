@@ -103,12 +103,6 @@ def read_data(data_name):
             labels.loc[labels['Diagnosis'] == 'M', 'Diagnosis'] = 0
             labels.loc[labels['Diagnosis'] == 'B', 'Diagnosis'] = 1
         
-        # elif data_name == 'census':
-        #     labels.loc[labels['income'] == '<=50K', 'income'] = 0
-        #     labels.loc[labels['income'] == '<=50K.', 'income'] = 0
-        #     labels.loc[labels['income'] == '>50K', 'income'] = 1
-        #     labels.loc[labels['income'] == '>50K.', 'income'] = 1
-        
         elif data_name == 'magic':
             labels.loc[labels['class'] == 'g', 'class'] = 0
             labels.loc[labels['class'] == 'h', 'class'] = 1
@@ -142,5 +136,34 @@ def read_labels(label_loc):
     labels = pd.read_csv(label_loc, header=None)
     labels = np.asarray(labels).flatten()
     return labels
+
+
+def read_syn_data(data_name, type_data=""):
+    
+
+    if type_data == "scalability":
+        input_loc = "/u/parishar/nobackup/DATASETS/scal_data/"
+        data_loc = os.path.join(input_loc, data_name + "_points.csv")
+        labels_loc = os.path.join(input_loc, data_name + "_labels.csv")
+
+    elif type_data == "clusters":
+        input_loc = "/u/parishar/nobackup/DATASETS/clustering_data/"
+        data_loc = os.path.join(input_loc, str(data_name) + "_clusters.csv")
+        labels_loc = os.path.join(input_loc, str(data_name) + "_labels.csv")
+    
+    elif type_data == "dimensions":
+        input_loc = "/u/parishar/nobackup/DATASETS/dims_data/"
+        data_loc = os.path.join(input_loc, data_name + "_dims.csv")
+        labels_loc = os.path.join(input_loc, data_name + "_labels.csv")
+    
+    # print("Hello: ", labels_name)
+
+    data = pd.read_csv(data_loc, header=None)
+    data = np.asarray(data, dtype=float)
+
+    labels = pd.read_csv(labels_loc, header=None)
+    labels = np.asarray(labels).flatten()
+
+    return data, labels
 
 

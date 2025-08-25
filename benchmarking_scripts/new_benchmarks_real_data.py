@@ -13,11 +13,17 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
+print("\n Starting the experiments")
+curr_time = datetime.now()
+print(f"Timestamp: {curr_time.strftime('%B %d, %Y at %I:%M %p')}")
+print("\n")
+
+
 parent_dir = os.path.dirname(os.getcwd())
 input_loc = "/u/parishar/nobackup/DATASETS/geokmeans_data/real_data/"
 
 # input_loc = os.path.join(parent_dir, "datasets", "clustering_data")
-output_loc = os.path.join(parent_dir, "benchmark_clus/")
+output_loc = os.path.join(parent_dir, "benchmark_real_data/")
 print(output_loc)
 
 if os.path.exists(output_loc) is False:
@@ -26,19 +32,9 @@ if os.path.exists(output_loc) is False:
 else:
     curr_time = datetime.now()
     create_timestamp = str(curr_time.hour) + "_" + str(curr_time.minute) + "_" + str(curr_time.second)
-    bkup_dir = os.path.join(parent_dir, "benchmark_clus_bkup" + create_timestamp)
+    bkup_dir = os.path.join(parent_dir, "benchmark_real_data_bkup" + create_timestamp)
     os.rename(output_loc, bkup_dir)
     os.mkdir(output_loc)
-
-
-def do_pca(dataset, n_comp):
-    pca = PCA(n_components=n_comp)
-    ss = StandardScaler()
-    dataset = ss.fit_transform(dataset)
-    principalComponents = pca.fit_transform(dataset)
-    # print("Variance: ", pca.explained_variance_)
-    pc_esc = np.array(pd.DataFrame(data=principalComponents))
-    return pc_esc
 
 
 
@@ -46,13 +42,13 @@ def do_pca(dataset, n_comp):
 epsilon = 0.001
 num_iters = 200
 
-prop = 3
+prop = 2.3
 num_clust = [2, 5, 10]
 seed_cnt_clus = [9598, 1901, 3231, 453, 63987, 7821, 8903, 1234, 4321, 5678]
-num_rep = 5
+num_rep = 10
 
-data_list = ['ringnorm', 'wisconsin', 'census', 'spambase', 'magic', 'crop']
-# data_list = ['ringnorm', "wisconsin"]
+data_list = ['ringnorm', 'wisconsin', 'spambase', 'magic', 'crop']
+# data_list = ['ringnorm', 'wisconsin', 'spambase', 'magic']
 
 
 ### Clustering Experiments
@@ -70,10 +66,10 @@ for data_name in data_list:
     print("#####################")
 
     if data_name in ["census", "spambase", "magic"]:
-        num_clust = [2, 10, 20, 30, 35]
+        num_clust = [5, 10, 20, 30, 35]
     
     elif data_name in ["wisconsin", "ringnorm"]:
-        num_clust = [2, 5, 10, 15, 20]
+        num_clust = [5, 10, 20, 30, 35]
     
     elif data_name == "crop":
         num_clust = [5, 20, 30, 40, 50]
@@ -160,3 +156,9 @@ for data_name in data_list:
 # print(avg_results)
 all_results.to_csv(output_loc + "all_results.csv", index=False)
 avg_results.to_csv(output_loc + "avg_results.csv",  index=False)
+
+
+print("\n Experiments completed")
+curr_time = datetime.now()
+print(f"Timestamp: {curr_time.strftime('%B %d, %Y at %I:%M %p')}")
+print("\n")
